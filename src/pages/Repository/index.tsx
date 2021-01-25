@@ -17,10 +17,8 @@ interface Repository {
   stargazers_count: number;
   forks_count: number;
   open_issues_count: number;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
+  login: string;
+  avatar_url: string;
 }
 
 interface Issue {
@@ -46,17 +44,17 @@ const Repository: React.FC = () => {
     api.get(`/users/${params.repository}/issues`).then((response) => {
       setIssues(response.data);
     });
-    // async function loadData(): Promise<void> {
-    //   const [repository, issues] = await Promise.all([
-    //     api.get(`/repos/${params.repository}`),
-    //     api.get(`/repos/${params.repository}/issues`),
-    //   ]);
+    async function loadData(): Promise<void> {
+      const [repository, issues] = await Promise.all([
+        api.get(`/users/${params.repository}`),
+        api.get(`/users/${params.repository}/issues`),
+      ]);
 
-    //   console.log(repository);
-    //   console.log(issues);
-    // }
+      console.log(repository);
+      console.log(issues);
+    }
 
-    // loadData();
+    loadData();
   }, [params.repository]); //eslint-disable-line
 
   return (
@@ -72,10 +70,7 @@ const Repository: React.FC = () => {
       {repository ? (
         <RepositoryInfo>
           <header>
-            <img
-              src={repository.owner.avatar_url}
-              alt={repository.owner.login}
-            />
+            <img src={repository.avatar_url} alt={repository.login} />
 
             <div>
               <strong>{repository.full_name}</strong>

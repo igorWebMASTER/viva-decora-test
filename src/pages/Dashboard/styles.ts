@@ -12,12 +12,21 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
+export const ContainerLinks = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Title = styled.h1`
-  font-size: 48px;
+  font-size: 15px;
   color: #fff;
+  text-transform: uppercase;
   max-width: 450px;
   line-height: 56px;
-  margin-top: 80px;
+  margin-top: 40px;
+  margin-left: 6px;
+  margin-right: 6px;
 `;
 
 export const Form = styled.form<FormProps>`
@@ -69,12 +78,19 @@ export const Error = styled.div`
   margin-top: 5px;
 `;
 
-export const Repositories = styled.div`
+export const MovieInfo = styled.div`
   margin-top: 80px;
   max-width: 700px;
+  min-height: 400px;
+  background: #fff;
+  transition: transform 0.2s;
+  margin-bottom: 60px;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 
   a {
-    background: #fff;
     border-radius: 5px;
     width: 100%;
     padding: 24px;
@@ -82,11 +98,6 @@ export const Repositories = styled.div`
 
     display: flex;
     align-items: center;
-    transition: transform 0.2s;
-
-    &:hover {
-      transform: translateX(10px);
-    }
 
     & + a {
       margin-top: 16px;
