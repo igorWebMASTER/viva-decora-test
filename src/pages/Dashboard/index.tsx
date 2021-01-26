@@ -2,11 +2,13 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
-import MovieHandleLikes from '../../components/MovieHandleLikes/';
+import MovieHandleLikes from '../../components/MovieHandleLikes';
 
 import logoImg from '../../assets/logo-viva-decora.png';
+import MenuLateral from '../../assets/menu-lateral.png';
 
 import {
+  HamburguerMenu,
   ContainerLinks,
   Container,
   Title,
@@ -29,16 +31,16 @@ const Dashboard: React.FC = () => {
   const [inputError, setInputError] = useState('');
 
   const [repositories, setRepositories] = useState<Repository[]>(() => {
-    const storagedRepositories = localStorage.getItem(
-      '@GithubExplorer:repositories',
-    );
-
-    if (storagedRepositories) {
-      return JSON.parse(storagedRepositories);
-    }
-
-    return [];
+    // const storagedRepositories = localStorage.getItem(
+    //   '@GithubExplorer:repositories',
+    // );
+    // if (storagedRepositories) {
+    //   return JSON.parse(storagedRepositories);
+    // }
+    // return [];
   });
+
+  // const [repositories, setRepositories] = useState<Repository[]>();
 
   useEffect(() => {
     localStorage.setItem(
@@ -47,26 +49,22 @@ const Dashboard: React.FC = () => {
     );
   }, [repositories]);
 
-  async function handleAddRepository(
-    event: FormEvent<HTMLFormElement>,
-  ): Promise<void> {
-    event.preventDefault();
-
+  async function handleAddRepository(): Promise<void> {
     if (!newRepo) {
       setInputError('Digite o auto/nome do repositório');
       return;
     }
 
     try {
-      const response = await api.get<Repository>(`users/${newRepo}`);
+      const response = await api.get<Repository>(
+        `&language=en-US&page=1&include_adult=false`,
+      );
+
+      console.log(response);
 
       const repository = response.data;
-
-      setRepositories([...repositories, repository]);
-      setNewRepo('');
-      setInputError('');
     } catch (err) {
-      setInputError('Erro na busca por esse repositório');
+      console.log(err);
     }
 
     //adição de um novo repositório
@@ -77,7 +75,10 @@ const Dashboard: React.FC = () => {
   return (
     <Container>
       <img src={logoImg} alt="logo" />
-
+      <HamburguerMenu>
+        <img src={MenuLateral} alt="logo" />
+        <img src={logoImg} alt="logo" />
+      </HamburguerMenu>
       <ContainerLinks>
         <Title>Filmes não curados</Title>
         <Title>Filmes curtidos</Title>
@@ -107,8 +108,6 @@ const Dashboard: React.FC = () => {
               <strong>{repository.full_name}</strong>
               <p>{repository.bio}</p>
             </div>
-
-            <FiChevronRight size={20} />
           </Link>
         ))}
       </MovieInfo>

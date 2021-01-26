@@ -5,17 +5,49 @@ interface FormProps {
   hasError: boolean;
 }
 
+export const HamburguerMenu = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > img:first-child {
+    position: relative;
+    right: 9rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  @media all and (min-width: 500px) {
+    display: none;
+  }
+
+  @media all and (max-width: 500px) {
+    display: flex;
+  }
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media all and (max-width: 500px) {
+    & > img {
+      display: none;
+    }
+  }
 `;
 
 export const ContainerLinks = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media all and (max-width: 500px) {
+    display: none;
+  }
 `;
 
 export const Title = styled.h1`
@@ -79,15 +111,16 @@ export const Error = styled.div`
 `;
 
 export const MovieInfo = styled.div`
-  margin-top: 80px;
+  margin-top: 60px;
   max-width: 700px;
-  min-height: 400px;
+  border-radius: 5px;
+  min-height: 460px;
   background: #fff;
   transition: transform 0.2s;
   margin-bottom: 60px;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   a {
