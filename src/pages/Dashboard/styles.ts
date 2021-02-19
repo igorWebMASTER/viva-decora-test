@@ -40,6 +40,30 @@ export const Container = styled.div`
   }
 `;
 
+export const MovieImageContainer = styled.div`
+  display: flex;
+  height: calc(100vw / 3.5);
+  width: calc(100vw / 2.5);
+  background: #fff;
+  border-radius: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & > img {
+    height: 100%;
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  @media all and (max-width: 500px) {
+    & > img {
+    }
+  }
+`;
+
 export const ContainerLinks = styled.div`
   display: flex;
   align-items: center;
@@ -59,6 +83,7 @@ export const Title = styled.h1`
   margin-top: 40px;
   margin-left: 6px;
   margin-right: 6px;
+  text-decoration: none;
 `;
 
 export const Form = styled.form<FormProps>`

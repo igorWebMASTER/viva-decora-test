@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import api from '../../services/api';
+// import api from '../../services/api';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -37,18 +37,18 @@ const Repository: React.FC = () => {
   const { params } = useRouteMatch<RepositoryParams>();
 
   useEffect(() => {
-    api.get(`/users/${params.repository}`).then((response) => {
-      setRepository(response.data);
-    });
+    // api.get(`/users/${params.repository}`).then((response) => {
+    //   setRepository(response.data);
+    // });
 
-    api.get(`/users/${params.repository}/issues`).then((response) => {
-      setIssues(response.data);
-    });
+    // api.get(`/users/${params.repository}/issues`).then((response) => {
+    //   setIssues(response.data);
+    // });
     async function loadData(): Promise<void> {
-      const [repository, issues] = await Promise.all([
-        api.get(`/users/${params.repository}`),
-        api.get(`/users/${params.repository}/issues`),
-      ]);
+      // const [repository, issues] = await Promise.all([
+      //   api.get(`/users/${params.repository}`),
+      //   api.get(`/users/${params.repository}/issues`),
+      // ]);
 
       console.log(repository);
       console.log(issues);

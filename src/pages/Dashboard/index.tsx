@@ -1,7 +1,9 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import api from '../../services/api';
+
+import axios from 'axios';
+import { fetchMovies } from '../../services/api';
 import MovieHandleLikes from '../../components/MovieHandleLikes';
 
 import logoImg from '../../assets/logo-viva-decora.png';
@@ -10,6 +12,7 @@ import MenuLateral from '../../assets/menu-lateral.png';
 import {
   HamburguerMenu,
   ContainerLinks,
+  MovieImageContainer,
   Container,
   Title,
   Form,
@@ -17,60 +20,64 @@ import {
   Error,
 } from './styles';
 
-interface Repository {
-  full_name: string;
-  description: string;
-  bio: string;
-  login: string;
-  avatar_url: string;
+interface Movies {
+  id: number;
+  poster_path: string;
 }
 
 const Dashboard: React.FC = () => {
-  const [newRepo, setNewRepo] = useState('');
+  const [movies, setMovies] = useState<Movies[]>();
 
-  const [inputError, setInputError] = useState('');
+  const API_MOVIEDB_KEY = process.env.MOVIE_DB_APP_KEY;
 
-  const [repositories, setRepositories] = useState<Repository[]>(() => {
-    // const storagedRepositories = localStorage.getItem(
-    //   '@GithubExplorer:repositories',
-    // );
-    // if (storagedRepositories) {
-    //   return JSON.parse(storagedRepositories);
-    // }
-    // return [];
-  });
+  function randomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  const randomNumber = randomInt(0, 1000);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const result = await axios(
+        `https://api.themoviedb.org/3/movie/${randomNumber}?api_key=ad2c409efdb4ec03a93fd197ed313f28`,
+      );
+
+      setMovies(result.data);
+
+      console.log(result.data);
+    };
+
+    fetchItems();
+  }, []);
+
+  // movies.map((movie) => {
+  //   console.log(movie);
+  // });
 
   // const [repositories, setRepositories] = useState<Repository[]>();
 
-  useEffect(() => {
-    localStorage.setItem(
-      '@GithubExplorer:repositories',
-      JSON.stringify(repositories),
-    );
-  }, [repositories]);
+  // async function handleAddRepository(): Promise<void> {
+  //   if (!newRepo) {
+  //     setInputError('Digite o auto/nome do repositório');
+  //     return;
+  //   }
 
-  async function handleAddRepository(): Promise<void> {
-    if (!newRepo) {
-      setInputError('Digite o auto/nome do repositório');
-      return;
-    }
+  //   try {
+  //     const response = await api.get<Repository>(
+  //       `&language=en-US&page=1&include_adult=false`,
+  //     );
 
-    try {
-      const response = await api.get<Repository>(
-        `&language=en-US&page=1&include_adult=false`,
-      );
+  //     console.log(response);
 
-      console.log(response);
+  //     const repository = response.data;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
 
-      const repository = response.data;
-    } catch (err) {
-      console.log(err);
-    }
-
-    //adição de um novo repositório
-    //consumir API do github
-    //salvar o valor no stado
-  }
+  //   //adição de um novo repositório
+  //   //consumir API do github
+  //   //salvar o valor no stado
+  // }
 
   return (
     <Container>
@@ -79,12 +86,20 @@ const Dashboard: React.FC = () => {
         <img src={MenuLateral} alt="logo" />
         <img src={logoImg} alt="logo" />
       </HamburguerMenu>
+
       <ContainerLinks>
-        <Title>Filmes não curados</Title>
-        <Title>Filmes curtidos</Title>
-        <Title>Filmes não curtidos</Title>
+        <Link to="/">
+          <Title>Filmes não curados</Title>
+        </Link>
+        <Link to="/repos">
+          <Title>Filmes curtidos</Title>
+        </Link>
+        <Link to="/watched">
+          <Title>Filmes não curtidos</Title>
+        </Link>
       </ContainerLinks>
 
+      <MovieImageContainer></MovieImageContainer>
       {/* <Form hasError={!!inputError} onSubmit={handleAddRepository}>
         <input
           value={newRepo}
@@ -94,23 +109,18 @@ const Dashboard: React.FC = () => {
         <button type="submit">Pesquisar</button>
       </Form> */}
 
-      {inputError && <Error>{inputError}</Error>}
+      <MovieInfo></MovieInfo>
+      {/* <Link> */}
+      {/* //   key={repository.full_name}
+          //   to={`/repositories/${repository.full_name}`}
+          // >
+          // <img src={movie.poster_path} alt="sdsa" />
 
-      <MovieInfo>
-        {repositories.map((repository) => (
-          <Link
-            key={repository.full_name}
-            to={`/repositories/${repository.full_name}`}
-          >
-            <img src={repository.avatar_url} alt={repository.login} />
-
-            <div>
-              <strong>{repository.full_name}</strong>
-              <p>{repository.bio}</p>
-            </div>
-          </Link>
-        ))}
-      </MovieInfo>
+          // <div>
+          //   <strong>{repository.full_name}</strong>
+          //   <p>{repository.bio}</p>
+          // </div> */}
+      {/* // </Link> */}
 
       <MovieHandleLikes />
     </Container>
